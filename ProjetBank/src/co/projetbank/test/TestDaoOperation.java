@@ -10,7 +10,7 @@ public class TestDaoOperation {
 	    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		OperationDao od = new OperationDao();		
 		
-		Operation o1 = new Payment(13,sqlDate,10000);
+		Operation o1 = new Payment(13,sqlDate,10000,"Payment");
 		
 		if(od.create(o1))	System.out.println("insertion ok de " + o1);
 		else System.out.println("insertion impossible, client avec cet id existe déjà ");

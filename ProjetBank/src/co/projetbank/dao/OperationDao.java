@@ -1,12 +1,15 @@
 package co.projetbank.dao;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import co.projetbank.entities.Account;
 import co.projetbank.entities.Operation;
+import co.projetbank.entities.Payment;
+import co.projetbank.entities.Withdrawal;
 
 public class OperationDao extends Dao<Operation>{
 	@Override
@@ -18,8 +21,12 @@ public class OperationDao extends Dao<Operation>{
 			ps = connection.prepareStatement(str);
 			ps.setInt(1,id);
 			ResultSet resultSet = ps.executeQuery();
-			if(resultSet.next()){
-				compte = new Operation(resultSet.getInt(1),resultSet.getDate(2),resultSet.getDouble(3));
+			while(resultSet.next()){
+				if(resultSet.getString("Type")=="Payment")
+				compte = new Payment(resultSet.getInt(1),resultSet.getDate(2),resultSet.getDouble(3),resultSet.getString(4));
+				else
+					compte = new Withdrawal(resultSet.getInt(1),resultSet.getDate(2),resultSet.getDouble(3),resultSet.getString(4));
+					
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -29,15 +36,15 @@ public class OperationDao extends Dao<Operation>{
 
 	@Override
 	public boolean create(Operation obj) {
-		String str = "INSERT INTO T_Operation (NumOp,DateOp,Amount) VALUES (?, ? ,? );";
+		String str = "INSERT INTO T_Operation (NumOp,Amount,Type) VALUES (?,?,?);";
 		PreparedStatement ps;
 		boolean ok = false;
 		try {
 			ps = connection.prepareStatement(str);
 			ps.setInt(1, obj.getNumOp());
-			ps.setDate(2,(Date) obj.getDateOp());
-			ps.setDouble(3,obj.getAmount());
-			
+			//ps.setDate(2,(Date) obj.getDateOp());
+			ps.setDouble(2,obj.getAmount());
+			ps.setString(3,obj.getType());
 			ps.executeQuery();
 			ok = true;
 		} catch (SQLException e) {
@@ -77,5 +84,30 @@ public class OperationDao extends Dao<Operation>{
 			e.printStackTrace();
 		}
 		return ok;
+	}
+
+	public ArrayList<Operation> listOperations(int idCust) {
+	
+		ArrayList<Operation> list = new ArrayList<Operation>();
+		String str = "select * from T_Operation;";
+		PreparedStatement ps;
+		
+		try {
+			ps = connection.prepareStatement(str);
+			ResultSet resultSet = ps.executeQuery();
+		
+			 while(resultSet.next()) {
+			    	
+			    	list.add(new Operation(resultSet.getInt(1),resultSet.getDate(2),resultSet.getDouble(3),resultSet.getString(4)));
+			    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		
+		//requetes de recuperation des operations
+		//boucle qui permet de recuperer toutes les occurences de ma tables des operations
+		
+		return list;
 	}
 }

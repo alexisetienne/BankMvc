@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import co.projetbank.dao.UserDao;
+import co.projetbank.entities.User;
+
 /**
  * Servlet implementation class Controller
  */
@@ -53,8 +56,9 @@ public class Controller extends HttpServlet {
 	        session.setAttribute( "password", password );
 
 	        System.out.println( "in the doPost" );
-	        
-	        if ( login.equals( "/Login" ) && password.equals( "etienne" ) ) {
+	        UserDao userDao = new UserDao();
+	        User user = userDao.isValidLogin(login,password);
+	        if ( user != null )  {
 	            session.setAttribute( "isConnected", true );
 	            request.getRequestDispatcher( "/Connected.jsp" ).forward( request, response );
 	        } else {
