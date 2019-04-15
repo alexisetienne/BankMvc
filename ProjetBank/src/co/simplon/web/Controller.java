@@ -60,7 +60,7 @@ public class Controller extends HttpServlet {
 	        User user = userDao.isValidLogin(login,password);
 	        if ( user != null )  {
 	            session.setAttribute( "isConnected", true );
-	            request.getRequestDispatcher( "/vue.jsp" ).forward( request, response );
+	            request.getRequestDispatcher( "/index.html" ).forward( request, response );
 	        } else {
 	            session.setAttribute( "isConnected", false );
 	            request.getRequestDispatcher( "/login.jsp" ).forward( request, response );
