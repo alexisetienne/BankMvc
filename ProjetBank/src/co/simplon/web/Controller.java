@@ -50,6 +50,7 @@ public class Controller extends HttpServlet {
 		// TODO Auto-generated method stub
 		 String login = request.getParameter( "txtLogin" );
 	        String password = request.getParameter( "txtPassword" );
+	        
 
 	        HttpSession session = request.getSession( true );
 	        session.setAttribute( "login", login );
@@ -59,8 +60,9 @@ public class Controller extends HttpServlet {
 	        UserDao userDao = new UserDao();
 	        User user = userDao.isValidLogin(login,password);
 	        if ( user != null )  {
+	        	session.setAttribute("Account",null);
 	            session.setAttribute( "isConnected", true );
-	            request.getRequestDispatcher( "/index.html" ).forward( request, response );
+	            request.getRequestDispatcher( "/vue.jsp" ).forward( request, response );
 	        } else {
 	            session.setAttribute( "isConnected", false );
 	            request.getRequestDispatcher( "/login.jsp" ).forward( request, response );

@@ -18,7 +18,7 @@ public class AccountDao extends Dao<Account> {
 			ps.setInt(1,id);
 			ResultSet resultSet = ps.executeQuery();
 			if(resultSet.next()){
-				compte = new Account(resultSet.getInt(1),resultSet.getDouble(2),resultSet.getDate(3));
+				//compte = new Account(resultSet.getInt(1),resultSet.getDouble(2),resultSet.getDate(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

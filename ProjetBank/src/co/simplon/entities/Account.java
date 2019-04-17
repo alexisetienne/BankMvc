@@ -3,7 +3,7 @@ package co.simplon.entities;
 
 import java.util.Date;
 
-public  class Account {
+public abstract class Account {
 	private int IdCust ; 
 	private double Balance;
 	private Date DateCreation;
